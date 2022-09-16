@@ -20,10 +20,22 @@
   </entry>
   <entry>
     <title>test</title>
-    <url>/2022/09/16/19-51-41/</url>
+    <url>/2021/09/16/20-02-42/</url>
     <content><![CDATA[<p>这是一个测试</p>
 <p><img src="https://raw.githubusercontent.com/yyzim/image/main/img/202209161955518.png" alt="image-20220916195522487"></p>
 <p>aaa</p>
 ]]></content>
+      <tags>
+        <tag>java xml</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>test1</title>
+    <url>/2022/09/16/20-02-42/</url>
+    <content><![CDATA[<p>test1</p>
+]]></content>
+      <tags>
+        <tag>java xml</tag>
+      </tags>
   </entry>
 </search>
