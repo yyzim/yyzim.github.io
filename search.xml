@@ -212,7 +212,7 @@
 <span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p>调用的结果：</p>
-<img src="C:\Users\yizhouyang\AppData\Roaming\Typora\typora-user-images\image-20220917140711498.png" alt="image-20220917140711498" style="zoom:67%;" />
+<img src="https://raw.githubusercontent.com/yyzim/image/main/img/202209171539062.png" alt="image-20220917140711498" style="zoom:67%;" />
 
 <p>这里，我连续多次调用了RibbonConsumer，可以看见Ribbon成功帮我们调用了Provider服务实例，并且实现了负载均衡。</p>
 <p>这里Ribbon交替调用了Provider1和2，是因为Ribbon的默认的负载均衡策略是<strong>轮询</strong>。</p>
