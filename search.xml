@@ -1,80 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>Nacos注册中心的简单使用</title>
-    <url>/2022/09/16/20-29-00/</url>
-    <content><![CDATA[<h2 id="1-介绍"><a href="#1-介绍" class="headerlink" title="1. 介绍"></a>1. 介绍</h2><p>Nacos(Dynamic Naming and Configuration Service)是服务中心的另外一种实现。从注册中心的功能实现角度，与Eureka等价，只是实现方式有所差异。与Eureka不同的是，Nacos注册中心类似于Tomcat，是独立启动的服务器。因此在我们的代码中，无需在专门创建一个工程用于启动注册中心。</p>
-<h2 id="2-启动"><a href="#2-启动" class="headerlink" title="2. 启动"></a>2. 启动</h2><p>进入Nacos的bin目录，输入</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">startup.cmd -m standalone</span><br></pre></td></tr></table></figure>
-
-<p>成功启动</p>
-<p><img src="https://raw.githubusercontent.com/yyzim/image/main/img/202209162033602.png" alt="image-20220916203348514"></p>
-<p>Nacos注册中心的默认端口是<strong>8848</strong>，在浏览器中输入<a href="http://localhost:8848/nacos%E5%8D%B3%E5%8F%AF%E8%AE%BF%E9%97%AE%E5%88%B0Nacos%E6%9C%8D%E5%8A%A1">http://localhost:8848/nacos即可访问到Nacos服务</a></p>
-<p><img src="https://raw.githubusercontent.com/yyzim/image/main/img/202209162037250.png" alt="image-20220916203733119"></p>
-<p>用户名和密码都是nacos，登录即可看到Nacos的主页</p>
-<p><img src="https://raw.githubusercontent.com/yyzim/image/main/img/202209162039561.png" alt="image-20220916203954464"></p>
-<h2 id="3-Nacos的使用"><a href="#3-Nacos的使用" class="headerlink" title="3. Nacos的使用"></a>3. Nacos的使用</h2><h3 id="3-1-父工程导入依赖"><a href="#3-1-父工程导入依赖" class="headerlink" title="3.1 父工程导入依赖"></a>3.1 父工程导入依赖</h3><p>在父工程中导入如下依赖</p>
-<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependencyManagement</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependencies</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!--spring-boot--&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-dependencies<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">version</span>&gt;</span>$&#123;springboot.version&#125;<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">type</span>&gt;</span>pom<span class="tag">&lt;/<span class="name">type</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">scope</span>&gt;</span>import<span class="tag">&lt;/<span class="name">scope</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!--spring-cloud--&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.cloud<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-cloud-dependencies<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">version</span>&gt;</span>Hoxton.SR1<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">type</span>&gt;</span>pom<span class="tag">&lt;/<span class="name">type</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">scope</span>&gt;</span>import<span class="tag">&lt;/<span class="name">scope</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!--springcloud-alibaba--&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.alibaba.cloud<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-cloud-alibaba-dependencies<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.1.0.RELEASE<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">type</span>&gt;</span>pom<span class="tag">&lt;/<span class="name">type</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">scope</span>&gt;</span>import<span class="tag">&lt;/<span class="name">scope</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependencies</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependencyManagement</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p>分别是Springboot, Springcloud和Springcloud-alibaba</p>
-<p>接着，创建子Module</p>
-<p>这里我分别创建provider1, provider2, consumer一共3个服务来测试Nacos的注册和自动发现功能</p>
-<h3 id="3-2-使用Nacos"><a href="#3-2-使用Nacos" class="headerlink" title="3.2 使用Nacos"></a>3.2 使用Nacos</h3><h4 id="3-2-1-导入依赖"><a href="#3-2-1-导入依赖" class="headerlink" title="3.2.1 导入依赖"></a>3.2.1 导入依赖</h4><p>在module中导入以下依赖，分别是nacos-discovery和web依赖</p>
-<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependencies</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.alibaba.cloud<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-cloud-starter-alibaba-nacos-discovery<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-web<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependencies</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<h4 id="3-2-2-配置nacos"><a href="#3-2-2-配置nacos" class="headerlink" title="3.2.2 配置nacos"></a>3.2.2 配置nacos</h4><p>在application.yml中添加以下配置</p>
-<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">server:</span></span><br><span class="line">  <span class="attr">port:</span> <span class="number">5002</span></span><br><span class="line"><span class="attr">spring:</span></span><br><span class="line">  <span class="attr">application:</span></span><br><span class="line">    <span class="attr">name:</span> <span class="string">nacos-provider</span></span><br><span class="line">  <span class="attr">cloud:</span></span><br><span class="line">    <span class="attr">nacos:</span></span><br><span class="line">      <span class="attr">discovery:</span></span><br><span class="line">        <span class="attr">server-addr:</span> <span class="string">localhost:8848</span></span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><strong>server.port: 5002</strong> ：指定该服务的端口为5002</li>
-<li><strong>spring.application.name</strong>：指定该服务的名称叫做nacos-provider</li>
-<li><strong>cloud.nacos.discovery.server-addr</strong>：需要填入刚才启动的nacos服务的url，即指定nacos的server地址</li>
-</ul>
-<p>此外，在Springboot的启动类加上**@EnableDiscoveryClient**注解，即完成了nacos服务的配置。</p>
-<p>编写provider的测试代码如下：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">NacosProvider2Controller</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@GetMapping(&quot;nacos/call&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">call</span><span class="params">(String name)</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;provider1 -&gt; hello, &quot;</span> + name;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>同样的步骤配置provider2</p>
-<hr>
-<p>consumer关于nacos的配置与provider相同，consumer中要调用provider服务，只需要使用Spring自动注入DiscoveryClient接口</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Autowired</span></span><br><span class="line">DiscoveryClient discoveryClient;</span><br></pre></td></tr></table></figure>
-
-<p>接着即可获取provider服务的uri，来向调用provider提供的服务</p>
-<p>consumer测试代码如下：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">NacosConsumerController</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    RestTemplate restTemplate;</span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    DiscoveryClient discoveryClient;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@GetMapping(&quot;nacos/hello&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">call</span><span class="params">(String name)</span> &#123;</span><br><span class="line">        <span class="comment">// 先获取服务实例</span></span><br><span class="line">        List&lt;ServiceInstance&gt; instances = discoveryClient.getInstances(<span class="string">&quot;nacos-provider&quot;</span>);</span><br><span class="line">        <span class="type">URI</span> <span class="variable">uri</span> <span class="operator">=</span> instances.get(<span class="number">0</span>).getUri();</span><br><span class="line">        <span class="type">String</span> <span class="variable">url</span> <span class="operator">=</span> uri + <span class="string">&quot;/nacos/call?name=&#123;1&#125;&quot;</span>;</span><br><span class="line">        <span class="type">String</span> <span class="variable">result</span> <span class="operator">=</span> restTemplate.getForObject(url, String.class, name);</span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h4 id="3-2-3-测试"><a href="#3-2-3-测试" class="headerlink" title="3.2.3 测试"></a>3.2.3 测试</h4><p>在idea中启动3个服务，打开Nacos的管理页面，即可在服务列表中看到刚才启动的服务，说明Nacos的注册和自动发现都没有问题</p>
-<p><img src="https://raw.githubusercontent.com/yyzim/image/main/img/202209162138607.png" alt="image-20220916213847499"></p>
-<p>接着，向consumer发送Get请求调用hello测试方法，观察DiscoveryClient的getInstances能够返回服务的实例</p>
-<p><img src="https://raw.githubusercontent.com/yyzim/image/main/img/202209162141668.png" alt="image-20220916214132628"></p>
-<p>从结果可以看出，成功调用了provider2的实例</p>
-<p>接着，停掉provider2的服务，再次调用</p>
-<p><img src="https://raw.githubusercontent.com/yyzim/image/main/img/202209162143828.png" alt="image-20220916214254179"></p>
-<p>OK</p>
-<h2 id="4-总结"><a href="#4-总结" class="headerlink" title="4.总结"></a>4.总结</h2><ul>
-<li><p>启动：Nacos注册中心提供了服务的注册和自动发现功能，简单易用，下载Nacos解压后，即可直接运行</p>
-</li>
-<li><p>配置：</p>
-<ul>
-<li>父工程中引入<strong>spring-cloud-alibaba-dependencies</strong>、module中引入<strong>spring-cloud-starter-alibaba-nacos-discovery</strong></li>
-<li>application.yaml中配置服务的端口号、服务的名字以及Nacos Server的URL</li>
-<li>在Springboot启动类上添加**@EnableDiscoveryClient**注解</li>
-</ul>
-</li>
-<li><p>使用：使用Spring自动注入DiscoveryClient接口的实例，即可获取Nacos中你所需要服务的实例</p>
-</li>
-</ul>
-]]></content>
-      <categories>
-        <category>微服务学习笔记</category>
-      </categories>
-      <tags>
-        <tag>Nacos</tag>
-        <tag>微服务</tag>
-        <tag>Springcloud</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Ribbon使用入门</title>
     <url>/2022/09/17/09-26-35/</url>
     <content><![CDATA[<h2 id="1-Ribbon是什么？"><a href="#1-Ribbon是什么？" class="headerlink" title="1. Ribbon是什么？"></a>1. Ribbon是什么？</h2><p>Ribbon是Netflix发布的云中间层服务开源项目，其主要功能是提供客户端实现负载均衡算法。Ribbon客户端组件提供一系列完善的配置项如连接超时，重试等。简单的说，Ribbon是一个客户端负载均衡器，我们可以在配置文件中Load Balancer后面的所有机器，Ribbon会自动的帮助你基于某种规则（如简单轮询，随机连接等）去连接这些机器，我们也很容易使用Ribbon实现自定义的负载均衡算法。</p>
@@ -143,8 +69,8 @@
         <category>微服务学习笔记</category>
       </categories>
       <tags>
-        <tag>微服务</tag>
         <tag>Ribbon</tag>
+        <tag>微服务</tag>
         <tag>SpringCloud</tag>
       </tags>
   </entry>
@@ -165,5 +91,79 @@
 
 <p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
 ]]></content>
+  </entry>
+  <entry>
+    <title>Nacos注册中心的简单使用</title>
+    <url>/2022/09/16/20-29-00/</url>
+    <content><![CDATA[<h2 id="1-介绍"><a href="#1-介绍" class="headerlink" title="1. 介绍"></a>1. 介绍</h2><p>Nacos(Dynamic Naming and Configuration Service)是服务中心的另外一种实现。从注册中心的功能实现角度，与Eureka等价，只是实现方式有所差异。与Eureka不同的是，Nacos注册中心类似于Tomcat，是独立启动的服务器。因此在我们的代码中，无需在专门创建一个工程用于启动注册中心。</p>
+<h2 id="2-启动"><a href="#2-启动" class="headerlink" title="2. 启动"></a>2. 启动</h2><p>进入Nacos的bin目录，输入</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">startup.cmd -m standalone</span><br></pre></td></tr></table></figure>
+
+<p>成功启动</p>
+<p><img src="https://raw.githubusercontent.com/yyzim/image/main/img/202209162033602.png" alt="image-20220916203348514"></p>
+<p>Nacos注册中心的默认端口是<strong>8848</strong>，在浏览器中输入<a href="http://localhost:8848/nacos%E5%8D%B3%E5%8F%AF%E8%AE%BF%E9%97%AE%E5%88%B0Nacos%E6%9C%8D%E5%8A%A1">http://localhost:8848/nacos即可访问到Nacos服务</a></p>
+<p><img src="https://raw.githubusercontent.com/yyzim/image/main/img/202209162037250.png" alt="image-20220916203733119"></p>
+<p>用户名和密码都是nacos，登录即可看到Nacos的主页</p>
+<p><img src="https://raw.githubusercontent.com/yyzim/image/main/img/202209162039561.png" alt="image-20220916203954464"></p>
+<h2 id="3-Nacos的使用"><a href="#3-Nacos的使用" class="headerlink" title="3. Nacos的使用"></a>3. Nacos的使用</h2><h3 id="3-1-父工程导入依赖"><a href="#3-1-父工程导入依赖" class="headerlink" title="3.1 父工程导入依赖"></a>3.1 父工程导入依赖</h3><p>在父工程中导入如下依赖</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependencyManagement</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependencies</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!--spring-boot--&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-dependencies<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">version</span>&gt;</span>$&#123;springboot.version&#125;<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">type</span>&gt;</span>pom<span class="tag">&lt;/<span class="name">type</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">scope</span>&gt;</span>import<span class="tag">&lt;/<span class="name">scope</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!--spring-cloud--&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.cloud<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-cloud-dependencies<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">version</span>&gt;</span>Hoxton.SR1<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">type</span>&gt;</span>pom<span class="tag">&lt;/<span class="name">type</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">scope</span>&gt;</span>import<span class="tag">&lt;/<span class="name">scope</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!--springcloud-alibaba--&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.alibaba.cloud<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-cloud-alibaba-dependencies<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.1.0.RELEASE<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">type</span>&gt;</span>pom<span class="tag">&lt;/<span class="name">type</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">scope</span>&gt;</span>import<span class="tag">&lt;/<span class="name">scope</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependencies</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependencyManagement</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>分别是Springboot, Springcloud和Springcloud-alibaba</p>
+<p>接着，创建子Module</p>
+<p>这里我分别创建provider1, provider2, consumer一共3个服务来测试Nacos的注册和自动发现功能</p>
+<h3 id="3-2-使用Nacos"><a href="#3-2-使用Nacos" class="headerlink" title="3.2 使用Nacos"></a>3.2 使用Nacos</h3><h4 id="3-2-1-导入依赖"><a href="#3-2-1-导入依赖" class="headerlink" title="3.2.1 导入依赖"></a>3.2.1 导入依赖</h4><p>在module中导入以下依赖，分别是nacos-discovery和web依赖</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependencies</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.alibaba.cloud<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-cloud-starter-alibaba-nacos-discovery<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-web<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependencies</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="3-2-2-配置nacos"><a href="#3-2-2-配置nacos" class="headerlink" title="3.2.2 配置nacos"></a>3.2.2 配置nacos</h4><p>在application.yml中添加以下配置</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">server:</span></span><br><span class="line">  <span class="attr">port:</span> <span class="number">5002</span></span><br><span class="line"><span class="attr">spring:</span></span><br><span class="line">  <span class="attr">application:</span></span><br><span class="line">    <span class="attr">name:</span> <span class="string">nacos-provider</span></span><br><span class="line">  <span class="attr">cloud:</span></span><br><span class="line">    <span class="attr">nacos:</span></span><br><span class="line">      <span class="attr">discovery:</span></span><br><span class="line">        <span class="attr">server-addr:</span> <span class="string">localhost:8848</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>server.port: 5002</strong> ：指定该服务的端口为5002</li>
+<li><strong>spring.application.name</strong>：指定该服务的名称叫做nacos-provider</li>
+<li><strong>cloud.nacos.discovery.server-addr</strong>：需要填入刚才启动的nacos服务的url，即指定nacos的server地址</li>
+</ul>
+<p>此外，在Springboot的启动类加上**@EnableDiscoveryClient**注解，即完成了nacos服务的配置。</p>
+<p>编写provider的测试代码如下：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">NacosProvider2Controller</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@GetMapping(&quot;nacos/call&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">call</span><span class="params">(String name)</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;provider1 -&gt; hello, &quot;</span> + name;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>同样的步骤配置provider2</p>
+<hr>
+<p>consumer关于nacos的配置与provider相同，consumer中要调用provider服务，只需要使用Spring自动注入DiscoveryClient接口</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Autowired</span></span><br><span class="line">DiscoveryClient discoveryClient;</span><br></pre></td></tr></table></figure>
+
+<p>接着即可获取provider服务的uri，来向调用provider提供的服务</p>
+<p>consumer测试代码如下：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">NacosConsumerController</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    RestTemplate restTemplate;</span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    DiscoveryClient discoveryClient;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@GetMapping(&quot;nacos/hello&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">call</span><span class="params">(String name)</span> &#123;</span><br><span class="line">        <span class="comment">// 先获取服务实例</span></span><br><span class="line">        List&lt;ServiceInstance&gt; instances = discoveryClient.getInstances(<span class="string">&quot;nacos-provider&quot;</span>);</span><br><span class="line">        <span class="type">URI</span> <span class="variable">uri</span> <span class="operator">=</span> instances.get(<span class="number">0</span>).getUri();</span><br><span class="line">        <span class="type">String</span> <span class="variable">url</span> <span class="operator">=</span> uri + <span class="string">&quot;/nacos/call?name=&#123;1&#125;&quot;</span>;</span><br><span class="line">        <span class="type">String</span> <span class="variable">result</span> <span class="operator">=</span> restTemplate.getForObject(url, String.class, name);</span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="3-2-3-测试"><a href="#3-2-3-测试" class="headerlink" title="3.2.3 测试"></a>3.2.3 测试</h4><p>在idea中启动3个服务，打开Nacos的管理页面，即可在服务列表中看到刚才启动的服务，说明Nacos的注册和自动发现都没有问题</p>
+<p><img src="https://raw.githubusercontent.com/yyzim/image/main/img/202209162138607.png" alt="image-20220916213847499"></p>
+<p>接着，向consumer发送Get请求调用hello测试方法，观察DiscoveryClient的getInstances能够返回服务的实例</p>
+<p><img src="https://raw.githubusercontent.com/yyzim/image/main/img/202209162141668.png" alt="image-20220916214132628"></p>
+<p>从结果可以看出，成功调用了provider2的实例</p>
+<p>接着，停掉provider2的服务，再次调用</p>
+<p><img src="https://raw.githubusercontent.com/yyzim/image/main/img/202209162143828.png" alt="image-20220916214254179"></p>
+<p>OK</p>
+<h2 id="4-总结"><a href="#4-总结" class="headerlink" title="4.总结"></a>4.总结</h2><ul>
+<li><p>启动：Nacos注册中心提供了服务的注册和自动发现功能，简单易用，下载Nacos解压后，即可直接运行</p>
+</li>
+<li><p>配置：</p>
+<ul>
+<li>父工程中引入<strong>spring-cloud-alibaba-dependencies</strong>、module中引入<strong>spring-cloud-starter-alibaba-nacos-discovery</strong></li>
+<li>application.yaml中配置服务的端口号、服务的名字以及Nacos Server的URL</li>
+<li>在Springboot启动类上添加**@EnableDiscoveryClient**注解</li>
+</ul>
+</li>
+<li><p>使用：使用Spring自动注入DiscoveryClient接口的实例，即可获取Nacos中你所需要服务的实例</p>
+</li>
+</ul>
+]]></content>
+      <categories>
+        <category>微服务学习笔记</category>
+      </categories>
+      <tags>
+        <tag>微服务</tag>
+        <tag>Nacos</tag>
+        <tag>Springcloud</tag>
+      </tags>
   </entry>
 </search>
